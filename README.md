@@ -1,7 +1,8 @@
 # pgdownloader
-This script allows admin of provinggrounds to download all PG guides to desktop.
+- This script allows admin of provinggrounds to download all PG guides to desktop.
 
 # Prerequisite
+- Ensure python3 is installed.
 - Ensure wkhtmltopdf is installed. 
 - Follow, https://github.com/JazzCore/python-pdfkit/wiki/Installing-wkhtmltopdf
 - Set environment PATH to include bin/ of wkhtmltopdf
