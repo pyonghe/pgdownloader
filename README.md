@@ -20,3 +20,7 @@ pgdownloader <username> <password>
 ![image](https://user-images.githubusercontent.com/7576046/121468013-b7ea9100-c9ec-11eb-8b28-6bcd7440d5c7.png)
 
 ![image](https://user-images.githubusercontent.com/7576046/121468349-3b0be700-c9ed-11eb-9c8d-95dd65fc781f.png)
+
+# Todo 
+- Check for changes / new machines
+- Download the difference to disk
