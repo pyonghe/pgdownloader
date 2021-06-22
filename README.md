@@ -13,7 +13,7 @@
 
 # Usage
 ```
-pgdownloader <username> <password>
+python pgdownloader <username> <password>
 ```
 
 # Screenshots
