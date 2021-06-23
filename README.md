@@ -8,8 +8,10 @@
 - Set environment PATH to include bin/ of wkhtmltopdf
 
 # Installation
-- cd pgdownloader
-- pip install -r requirements.txt
+```
+cd pgdownloader
+pip install -r requirements.txt
+```
 
 # Usage
 ```
