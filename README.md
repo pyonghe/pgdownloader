@@ -24,5 +24,6 @@ python pgdownloader <username> <password>
 ![image](https://user-images.githubusercontent.com/7576046/121468349-3b0be700-c9ed-11eb-9c8d-95dd65fc781f.png)
 
 # Todo 
-- Check for changes / new machines
-- Download the difference to disk
+- ~~Check for changes / new machines~~
+- ~~Download the difference to disk~~
+- Efficiency
