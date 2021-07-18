@@ -4,12 +4,21 @@
 @todo : keep track of a list of machine and update if there is new machine to download
 @Created on : June 2021
 '''
+'''
+v0.2 : Update 
+Added feature to keep track of current guides using a config file on disk
+Added feature to only download guides that are missing currently
+Added feature to show what are the files that are new
+
+'''
 
 
-import sys, requests, re
+
+import sys, requests, re, os
 import httpx
 import pdfkit
 from tqdm import tqdm
+from os.path import exists
 
 def login(url, username, password):
 	
@@ -36,8 +45,45 @@ def login(url, username, password):
 		print("(+) Login Success!")
 		return s
 	
+def checkForNewUpdates(currGuideCount):
+
+	# Check if there is config file
+	if (exists("config.txt")):
+		# If yes then i will read the first line of the file and convert to integer.
+		with open("config.txt") as f:
+			count = int(f.readline().strip())
+			f.close()
+			if (currGuideCount > count):
+				#return true and update file
+				f = open("config.txt", "w")
+				f.write(str(currGuideCount))
+				f.close()
+				return True;
+			elif (currGuideCount == count):
+				#guide are updated do not need to download
+				return False;
+	else:
+		# Create a new file and add the currGuideCount
+		with open("config.txt", 'w') as f:
+			f.write(str(currGuideCount))
+			f.close()
+		return True;
+
+def currGuidesName():
+	# check current guide names store in array
+	# return the array and check if the machine name is in the array
+	# if yes do not download, else download
+	files = os.listdir(".")
+	filelist = list()
+	for f in files: 
+		if (f != "pgdownloader.py"):
+			filelist.append(f.replace(".pdf",""))
+
+	return filelist
+
 def download(url, session):
-	print("(+) Downloading guides and saving them as PDFs")
+	
+	dlist = list()
 	url = url + "guides/"
 	r = session.get(url)
 	x = str(re.findall("<i class=\"mdi mdi-desktop-classic\"></i>\n.*", r.text)).split("</i>")
@@ -51,12 +97,28 @@ def download(url, session):
 			]}
 	machinename = ""
 	
-	for i in tqdm(range(1, len(x))):
-		machinename = x[i].split(",")[0].split("\\n")[1].strip(' \']')
-		pdfkit.from_url(url + machinename + "/", machinename +'.pdf', options=options)
-	session.close()
-	print("(+) Download Completed")
-	
+	if(checkForNewUpdates(len(x))):
+		print("(+) Downloading guides and saving them as PDFs")
+		filelist = currGuidesName()
+		
+		for i in range(1, len(x)):
+			machinename = x[i].split(",")[0].split("\\n")[1].strip(' \']')
+			if(machinename not in filelist):
+				dlist.append(machinename)
+				#pdfkit.from_url(url + machinename + "/", machinename +'.pdf', options=options)
+		for i in tqdm(range(0,len(dlist))):
+			pdfkit.from_url(url + dlist[i] + "/", dlist[i] +'.pdf', options=options)
+
+		session.close()
+		print("(+) Download Completed")
+		print("(+) Newly added machine :")
+		for dfile in dlist:
+			print(dfile)
+
+	else:
+		session.close()
+		print("(+) Guides are up to date!")
+
 def main():
 	if len(sys.argv) != 3:
 		print ("(+) usage: %s <username> <password>" % sys.argv[0])
@@ -70,6 +132,7 @@ def main():
 	s = login(url, username, password)
 	download(url, s)
 	
+
 if __name__ == "__main__":
 	main()
 	
