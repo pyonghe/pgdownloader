@@ -11,6 +11,15 @@
 ```
 cd pgdownloader
 pip install -r requirements.txt
+
+# Alternatively using python venv :
+cd pgdownloader
+python3 -m venv venv
+source venv/bin/activate
+python -m pip install -r requirements.txt
+
+# Type this when you have finish using pgdownloader
+deactivate
 ```
 
 # Usage
