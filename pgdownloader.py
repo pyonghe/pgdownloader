@@ -5,7 +5,7 @@
 @Created on : June 2021
 '''
 '''
-v0.2 : Update 
+v0.2 : Update July 2021
 Added feature to keep track of current guides using a config file on disk
 Added feature to only download guides that are missing currently
 Added feature to show what are the files that are new
