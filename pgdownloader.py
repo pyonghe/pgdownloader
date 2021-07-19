@@ -46,7 +46,7 @@ def login(url, username, password):
 		return s
 	
 def checkForNewUpdates(currGuideCount):
-
+	print("(+) Checking for updates ...")
 	# Check if there is config file
 	if (exists("config.txt")):
 		# If yes then i will read the first line of the file and convert to integer.
@@ -76,7 +76,7 @@ def currGuidesName():
 	files = os.listdir(".")
 	filelist = list()
 	for f in files: 
-		if (f != "pgdownloader.py"):
+		if ((f != "pgdownloader.py") or ( f!="config.txt")):
 			filelist.append(f.replace(".pdf",""))
 
 	return filelist
@@ -97,8 +97,9 @@ def download(url, session):
 			]}
 	machinename = ""
 	
-	if(checkForNewUpdates(len(x))):
-		print("(+) Downloading guides and saving them as PDFs")
+	# len(x) -1 because the first element in x is ['<i class="mdi mdi-desktop-classic"> which is not what we want
+	if(checkForNewUpdates(len(x)-1)):
+		
 		filelist = currGuidesName()
 		
 		for i in range(1, len(x)):
@@ -106,14 +107,21 @@ def download(url, session):
 			if(machinename not in filelist):
 				dlist.append(machinename)
 				#pdfkit.from_url(url + machinename + "/", machinename +'.pdf', options=options)
-		for i in tqdm(range(0,len(dlist))):
-			pdfkit.from_url(url + dlist[i] + "/", dlist[i] +'.pdf', options=options)
+		if len(dlist) > 0: 
+			print("(+) Updates available")
+			print("(+) Downloading guides and saving them as PDFs")
+			for i in tqdm(range(0,len(dlist))):
+				pdfkit.from_url(url + dlist[i] + "/", dlist[i] +'.pdf', options=options)
+
+			print("(+) Download Completed")
+			print("(+) Newly added machine :")
+			for dfile in dlist:
+				print(dfile)
+		else:
+			print("(+) Guides are up to date!")
 
 		session.close()
-		print("(+) Download Completed")
-		print("(+) Newly added machine :")
-		for dfile in dlist:
-			print(dfile)
+		
 
 	else:
 		session.close()
