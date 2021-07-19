@@ -9,7 +9,6 @@ v0.2 : Update July 2021
 Added feature to keep track of current guides using a config file on disk
 Added feature to only download guides that are missing currently
 Added feature to show what are the files that are new
-
 '''
 
 
@@ -106,7 +105,6 @@ def download(url, session):
 			machinename = x[i].split(",")[0].split("\\n")[1].strip(' \']')
 			if(machinename not in filelist):
 				dlist.append(machinename)
-				#pdfkit.from_url(url + machinename + "/", machinename +'.pdf', options=options)
 		if len(dlist) > 0: 
 			print("(+) Updates available")
 			print("(+) Downloading guides and saving them as PDFs")
